@@ -1,6 +1,6 @@
 package com.novardis.productstorage.repository;
 
-import com.novardis.productstorage.dto.AttributeOneDto;
+import com.novardis.productstorage.dto.DictionaryAttributeValDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,18 +15,18 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class JdbcAttributeOneRepository implements AttributeOneRepository {
+public class JdbcDictionaryAttributeValRepository implements DictionaryAttributeValRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Long save(AttributeOneDto attributeOneDto) {
+    public Long save(DictionaryAttributeValDto dictionaryAttributeValDto) {
         String sqlQuery = "insert into attribute_01_value (value, attribute_01_dic_id) values(?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
-            stmt.setString(1, attributeOneDto.getValue());
-            stmt.setLong(2, attributeOneDto.getAttributeId());
+            stmt.setString(1, dictionaryAttributeValDto.getValue());
+            stmt.setLong(2, dictionaryAttributeValDto.getAttributeId());
             return stmt;
         }, keyHolder);
 
@@ -34,10 +34,10 @@ public class JdbcAttributeOneRepository implements AttributeOneRepository {
     }
 
     @Override
-    public boolean update(AttributeOneDto attributeOneDto) {
+    public boolean update(DictionaryAttributeValDto dictionaryAttributeValDto) {
         return jdbcTemplate.update("update attribute_01_value set value = ? where id = ?",
-                attributeOneDto.getValue(),
-                attributeOneDto.getAttributeId()) > 0;
+                dictionaryAttributeValDto.getValue(),
+                dictionaryAttributeValDto.getAttributeId()) > 0;
     }
 
     @Override
@@ -46,29 +46,29 @@ public class JdbcAttributeOneRepository implements AttributeOneRepository {
     }
 
     @Override
-    public List<AttributeOneDto> findAll() {
+    public List<DictionaryAttributeValDto> findAll() {
         return jdbcTemplate.query(
                 "select * from attribute_one_dic_view",
                 (rs, rowNum) -> {
-                    AttributeOneDto attributeOneDto = new AttributeOneDto();
-                    attributeOneDto
+                    DictionaryAttributeValDto dictionaryAttributeValDto = new DictionaryAttributeValDto();
+                    dictionaryAttributeValDto
                             .setAttributeId(rs.getLong("attribute_id"))
                             .setAttributeDicId(rs.getLong("attribute_dic_id"))
                             .setName(rs.getString("attribute_name"))
                             .setDescription(rs.getString("attribute_description"))
                             .setUnit(rs.getString("attribute_unit"))
                             .setValue(rs.getString("attribute_value"));
-                    return attributeOneDto;
+                    return dictionaryAttributeValDto;
                 }
         );
     }
 
     @Override
-    public Optional<AttributeOneDto> findById(Long id) {
+    public Optional<DictionaryAttributeValDto> findById(Long id) {
         return jdbcTemplate.queryForObject(
                 "select * from attribute_one_dic_view where attribute_id = ?",
                 new Object[]{id},
-                (rs, rowNum) -> Optional.of(new AttributeOneDto(
+                (rs, rowNum) -> Optional.of(new DictionaryAttributeValDto(
                         rs.getLong("attribute_id"),
                         rs.getLong("attribute_dic_id"),
                         rs.getString("attribute_name"),

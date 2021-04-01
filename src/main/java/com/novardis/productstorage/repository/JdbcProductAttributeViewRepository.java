@@ -1,7 +1,6 @@
 package com.novardis.productstorage.repository;
 
-import com.novardis.productstorage.dto.AttributeDicDto;
-import com.novardis.productstorage.dto.AttributeDto;
+import com.novardis.productstorage.dto.ProductAttributeViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,20 +13,20 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class JdbcAttributeRepository implements AttributeRepository {
+public class JdbcProductAttributeViewRepository implements AttributeRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     @Override
-    public List<AttributeDto> findAllByProductId(Long id) {
+    public List<ProductAttributeViewDto> findAllByProductId(Long id) {
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
-        List<AttributeDto> resultList = namedJdbcTemplate.query(
+        List<ProductAttributeViewDto> resultList = namedJdbcTemplate.query(
                 "select * from product_attribute_view where product_id = :id",
                 parameters,
                 (rs, rowNum) -> {
-                    AttributeDto attributeDto = new AttributeDto();
-                    attributeDto
+                    ProductAttributeViewDto productAttributeViewDto = new ProductAttributeViewDto();
+                    productAttributeViewDto
                             .setProductId(rs.getLong("product_id"))
                             .setProductName(rs.getString("product_name"))
                             .setDicId(rs.getLong("dic_id"))
@@ -37,7 +36,7 @@ public class JdbcAttributeRepository implements AttributeRepository {
                             .setAttributeUnit(rs.getString("attribute_unit"))
                             .setAttributeValue(rs.getString("attribute_value"));
 
-                    return attributeDto;
+                    return productAttributeViewDto;
                 }
         );
 
@@ -45,12 +44,12 @@ public class JdbcAttributeRepository implements AttributeRepository {
     }
 
     @Override
-    public List<AttributeDto> findAll() {
+    public List<ProductAttributeViewDto> findAll() {
         return jdbcTemplate.query(
                 "select * from product_attribute_view",
                 (rs, rowNum) ->{
-                    AttributeDto attributeDto = new AttributeDto();
-                    attributeDto
+                    ProductAttributeViewDto productAttributeViewDto = new ProductAttributeViewDto();
+                    productAttributeViewDto
                             .setProductId(rs.getLong("product_id"))
                             .setProductName(rs.getString("product_name"))
                             .setDicId(rs.getLong("dic_id"))
@@ -60,7 +59,7 @@ public class JdbcAttributeRepository implements AttributeRepository {
                             .setAttributeUnit(rs.getString("attribute_unit"))
                             .setAttributeValue(rs.getString("attribute_value"));
 
-                    return attributeDto;
+                    return productAttributeViewDto;
                 }
         );
     }

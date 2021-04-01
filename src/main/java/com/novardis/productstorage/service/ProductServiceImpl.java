@@ -2,7 +2,7 @@ package com.novardis.productstorage.service;
 
 import com.novardis.productstorage.domain.Attribute;
 import com.novardis.productstorage.domain.Product;
-import com.novardis.productstorage.dto.AttributeDto;
+import com.novardis.productstorage.dto.ProductAttributeViewDto;
 import com.novardis.productstorage.dto.ProductDto;
 import com.novardis.productstorage.mapper.AttributeMapper;
 import com.novardis.productstorage.mapper.ProductMapper;
@@ -36,9 +36,9 @@ public class ProductServiceImpl implements ProductService {
             products = productDtoList.stream()
                     .map(productMapper::toDomain)
                     .collect(Collectors.toList());
-            List<AttributeDto> attributeDtoList = attributeRepository.findAll();
+            List<ProductAttributeViewDto> productAttributeViewDtoList = attributeRepository.findAll();
             if (!CollectionUtils.isEmpty(productDtoList)) {
-                Map<Long, List<AttributeDto>> attributeDtoMap = attributeDtoList.stream().collect(Collectors.groupingBy(AttributeDto::getProductId));
+                Map<Long, List<ProductAttributeViewDto>> attributeDtoMap = productAttributeViewDtoList.stream().collect(Collectors.groupingBy(ProductAttributeViewDto::getProductId));
                 products.forEach(product -> {
                     if (!CollectionUtils.isEmpty(attributeDtoMap.get(product.getId())))
                     product.setAttributes(attributeDtoMap.get(product.getId()).stream().map(attributeMapper::toDomain).collect(Collectors.toList()));
@@ -83,9 +83,9 @@ public class ProductServiceImpl implements ProductService {
     public Product getById(Long id) {
         Product product = productMapper.toDomain(productRepository.findById(id).orElse(null));
         if (product != null) {
-            List<AttributeDto> attributeDtoList = attributeRepository.findAllByProductId(id);
-            if (!CollectionUtils.isEmpty(attributeDtoList)) {
-                List<Attribute> attributes = attributeDtoList.stream().map(attributeMapper::toDomain).collect(Collectors.toList());
+            List<ProductAttributeViewDto> productAttributeViewDtoList = attributeRepository.findAllByProductId(id);
+            if (!CollectionUtils.isEmpty(productAttributeViewDtoList)) {
+                List<Attribute> attributes = productAttributeViewDtoList.stream().map(attributeMapper::toDomain).collect(Collectors.toList());
                 product.setAttributes(attributes);
             }
         }

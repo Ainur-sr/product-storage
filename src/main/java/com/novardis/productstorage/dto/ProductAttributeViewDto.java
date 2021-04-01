@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttributeDto {
+public class ProductAttributeViewDto {
 
     private Long productId;
     private String productName;
