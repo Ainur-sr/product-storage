@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +36,14 @@ public class ProductServiceImpl implements ProductService {
             products = productDtoList.stream()
                     .map(productMapper::toDomain)
                     .collect(Collectors.toList());
+            List<AttributeDto> attributeDtoList = attributeRepository.findAll();
+            if (!CollectionUtils.isEmpty(productDtoList)) {
+                Map<Long, List<AttributeDto>> attributeDtoMap = attributeDtoList.stream().collect(Collectors.groupingBy(AttributeDto::getProductId));
+                products.forEach(product -> {
+                    if (!CollectionUtils.isEmpty(attributeDtoMap.get(product.getId())))
+                    product.setAttributes(attributeDtoMap.get(product.getId()).stream().map(attributeMapper::toDomain).collect(Collectors.toList()));
+                });
+            }
         } else {
             products = Collections.emptyList();
         }

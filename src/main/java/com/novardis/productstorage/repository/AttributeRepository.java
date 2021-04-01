@@ -7,5 +7,6 @@ import java.util.List;
 public interface AttributeRepository {
 
     List<AttributeDto> findAllByProductId(Long id);
+    List<AttributeDto> findAll();
 
 }
