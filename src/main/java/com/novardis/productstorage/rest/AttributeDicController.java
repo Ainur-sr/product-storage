@@ -24,4 +24,6 @@ public class AttributeDicController {
         return attributeDicService.getAll();
     }
 
+
+
 }
