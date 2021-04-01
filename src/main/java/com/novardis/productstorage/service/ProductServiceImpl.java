@@ -1,8 +1,12 @@
 package com.novardis.productstorage.service;
 
+import com.novardis.productstorage.domain.Attribute;
 import com.novardis.productstorage.domain.Product;
+import com.novardis.productstorage.dto.AttributeDto;
 import com.novardis.productstorage.dto.ProductDto;
+import com.novardis.productstorage.mapper.AttributeMapper;
 import com.novardis.productstorage.mapper.ProductMapper;
+import com.novardis.productstorage.repository.AttributeRepository;
 import com.novardis.productstorage.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,10 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final AttributeRepository attributeRepository;
+
     private final ProductMapper productMapper;
+    private final AttributeMapper attributeMapper;
 
     @Override
     public List<Product> getAll() {
@@ -65,7 +72,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(Long id) {
-        return productMapper.toDomain(productRepository.findById(id).orElse(null));
+        Product product = productMapper.toDomain(productRepository.findById(id).orElse(null));
+        if (product != null) {
+            List<AttributeDto> attributeDtoList = attributeRepository.findAllByProductId(id);
+            if (!CollectionUtils.isEmpty(attributeDtoList)) {
+                List<Attribute> attributes = attributeDtoList.stream().map(attributeMapper::toDomain).collect(Collectors.toList());
+                product.setAttributes(attributes);
+            }
+        }
+        return product;
     }
 
 }

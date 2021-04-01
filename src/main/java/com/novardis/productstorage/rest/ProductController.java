@@ -3,7 +3,6 @@ package com.novardis.productstorage.rest;
 import com.novardis.productstorage.domain.Product;
 import com.novardis.productstorage.service.ProductService;
 import io.swagger.annotations.ApiOperation;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "Атрибут товара")
 public class Attribute {
 
-    @ApiModelProperty(value = "Id")
-    private Long id;
+    @ApiModelProperty(value = "Id атрибута в справочной таблице")
+    private Long attributeId;
 
     @ApiModelProperty(value = "Id справочной таблицы")
-    private Long tableId;
+    private Long dicId;
 
     @ApiModelProperty(value = "Наименование")
     private String name;
@@ -22,10 +22,10 @@ public class Attribute {
     @ApiModelProperty(value = "Описание")
     private String description;
 
-    @ApiModelProperty(value = "Значение")
-    private String value;
-
     @ApiModelProperty(value = "Единица измерения")
     private String unit;
+
+    @ApiModelProperty(value = "Значение")
+    private String value;
 
 }

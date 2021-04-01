@@ -9,13 +9,15 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttributeOneDto {
+public class AttributeDto {
 
+    private Long productId;
+    private String productName;
+    private Long dicId;
     private Long attributeId;
-    private Long attributeDicId;
-    private String name;
-    private String description;
-    private String unit;
-    private String value;
+    private String attributeName;
+    private String attributeDescription;
+    private String attributeUnit;
+    private String attributeValue;
 
 }

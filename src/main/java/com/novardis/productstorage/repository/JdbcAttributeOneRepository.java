@@ -19,7 +19,6 @@ public class JdbcAttributeOneRepository implements AttributeOneRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-
     @Override
     public Long save(AttributeOneDto attributeOneDto) {
         String sqlQuery = "insert into attribute_01_value (value, attribute_01_dic_id) values(?, ?)";
@@ -27,7 +26,7 @@ public class JdbcAttributeOneRepository implements AttributeOneRepository {
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
             stmt.setString(1, attributeOneDto.getValue());
-            stmt.setLong(2, attributeOneDto.getId());
+            stmt.setLong(2, attributeOneDto.getAttributeId());
             return stmt;
         }, keyHolder);
 
@@ -36,7 +35,9 @@ public class JdbcAttributeOneRepository implements AttributeOneRepository {
 
     @Override
     public boolean update(AttributeOneDto attributeOneDto) {
-        return jdbcTemplate.update("update attribute_01_value set value = ? where id = ?", attributeOneDto.getValue(), attributeOneDto.getId()) > 0;
+        return jdbcTemplate.update("update attribute_01_value set value = ? where id = ?",
+                attributeOneDto.getValue(),
+                attributeOneDto.getAttributeId()) > 0;
     }
 
     @Override
@@ -46,11 +47,35 @@ public class JdbcAttributeOneRepository implements AttributeOneRepository {
 
     @Override
     public List<AttributeOneDto> findAll() {
-        return null;
+        return jdbcTemplate.query(
+                "select * from attribute_one_dic_view",
+                (rs, rowNum) -> {
+                    AttributeOneDto attributeOneDto = new AttributeOneDto();
+                    attributeOneDto
+                            .setAttributeId(rs.getLong("attribute_id"))
+                            .setAttributeDicId(rs.getLong("attribute_dic_id"))
+                            .setName(rs.getString("attribute_name"))
+                            .setDescription(rs.getString("attribute_description"))
+                            .setUnit(rs.getString("attribute_unit"))
+                            .setValue(rs.getString("attribute_value"));
+                    return attributeOneDto;
+                }
+        );
     }
 
     @Override
     public Optional<AttributeOneDto> findById(Long id) {
-        return Optional.empty();
+        return jdbcTemplate.queryForObject(
+                "select * from attribute_one_dic_view where attribute_id = ?",
+                new Object[]{id},
+                (rs, rowNum) -> Optional.of(new AttributeOneDto(
+                        rs.getLong("attribute_id"),
+                        rs.getLong("attribute_dic_id"),
+                        rs.getString("attribute_name"),
+                        rs.getString("attribute_description"),
+                        rs.getString("attribute_unit"),
+                        rs.getString("attribute_value")))
+        );
     }
+
 }
