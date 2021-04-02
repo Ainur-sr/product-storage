@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DictionaryAttributeService {
     List<DictionaryAttribute> getAttributeDicByDicId(Long dicId);
+    DictionaryAttribute getAttributeByDicIdAndId(Long dicId, Long attributeId);
+
 }

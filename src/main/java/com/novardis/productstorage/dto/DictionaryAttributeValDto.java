@@ -10,12 +10,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DictionaryAttributeValDto {
-
     private Long attributeId;
+    private String attributeValue;
     private Long attributeDicId;
-    private String name;
-    private String description;
-    private String unit;
-    private String value;
-
 }

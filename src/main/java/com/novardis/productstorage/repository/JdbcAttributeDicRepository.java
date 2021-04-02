@@ -25,7 +25,8 @@ public class JdbcAttributeDicRepository implements AttributeDicRepository {
                             .setId(rs.getLong("id"))
                             .setName(rs.getString("name"))
                             .setDescription(rs.getString("description"))
-                            .setTableName(rs.getString("table_name"));
+                            .setTableName(rs.getString("table_name"))
+                            .setValueTableName(rs.getString("value_table_name"));
 
                     return attributeDicDto;
                 }
@@ -41,7 +42,8 @@ public class JdbcAttributeDicRepository implements AttributeDicRepository {
                         rs.getLong("id"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getString("table_name")
+                        rs.getString("table_name"),
+                        rs.getString("value_table_name")
                 ))
         );
     }

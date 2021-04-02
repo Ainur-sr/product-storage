@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,4 +36,17 @@ public class DictionaryAttributeServiceImpl implements DictionaryAttributeServic
 
         return dictionaryAttributes;
     }
+
+    @Override
+    public DictionaryAttribute getAttributeByDicIdAndId(Long dicId, Long attributeId) {
+        DictionaryAttribute dictionaryAttribute = null;
+        AttributeDicDto attributeDicDto = attributeDicRepository.findById(dicId).orElse(null);
+        if (attributeDicDto != null){
+            DictionaryAttributeDto dictionaryAttributeDto = dictionaryAttributeRepository.getByDicNameAndId(attributeDicDto.getTableName(), attributeId).orElse(null);
+            dictionaryAttribute = dictionaryAttributeMapper.toDomain(dictionaryAttributeDto);
+        }
+        return dictionaryAttribute;
+    }
+
+
 }

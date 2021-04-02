@@ -7,14 +7,15 @@ import java.util.Optional;
 
 public interface DictionaryAttributeValRepository {
 
-    Long save(DictionaryAttributeValDto dictionaryAttributeValDto);
+    Long save(String attributeValTableName, String value, Long attributeDicId);
 
-    boolean update(DictionaryAttributeValDto dictionaryAttributeValDto);
+//    Long save(DictionaryAttributeValDto dictionaryAttributeValDto);
 
-    boolean deleteById(Long id);
+//    boolean update(DictionaryAttributeValDto dictionaryAttributeValDto);
 
-    List<DictionaryAttributeValDto> findAll();
+//    boolean deleteById(Long id);
 
-    Optional<DictionaryAttributeValDto> findById(Long id);
+
+//    Optional<DictionaryAttributeValDto> findById(Long id);
 
 }
