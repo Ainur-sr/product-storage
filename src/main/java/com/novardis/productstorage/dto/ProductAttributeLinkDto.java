@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class ProductAttributeLinkDto {
 
+    private Long id;
     private Long attributeValueId;
     private Long productId;
     private Long attributeDicId;
