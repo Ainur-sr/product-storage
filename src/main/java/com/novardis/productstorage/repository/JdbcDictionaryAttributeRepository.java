@@ -1,14 +1,9 @@
 package com.novardis.productstorage.repository;
 
-import com.novardis.productstorage.dto.AttributeDicDto;
 import com.novardis.productstorage.dto.DictionaryAttributeDto;
-import com.novardis.productstorage.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
