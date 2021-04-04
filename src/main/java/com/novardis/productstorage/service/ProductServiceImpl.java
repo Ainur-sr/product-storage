@@ -1,5 +1,7 @@
 package com.novardis.productstorage.service;
 
+import com.novardis.productstorage.criteria.ProductCreatePK;
+import com.novardis.productstorage.criteria.ProductUpdatePK;
 import com.novardis.productstorage.domain.Attribute;
 import com.novardis.productstorage.domain.Product;
 import com.novardis.productstorage.dto.ProductAttributeViewDto;
@@ -52,7 +54,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createProduct(ProductCreatePK productCreatePK) {
+        Product product = new Product();
+        product.setName(productCreatePK.getName());
         Long productId = productRepository.save(productMapper.toDto(product));
         if (productId != null) {
             ProductDto productDto = productRepository.findById(productId).orElse(null);
@@ -63,9 +67,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
+    public Product updateProduct(ProductUpdatePK productUpdatePK) {
         Product result = null;
-        if (product != null) {
+        if (productUpdatePK != null) {
+            Product product = new Product();
+            product
+                    .setId(productUpdatePK.getId())
+                    .setName(productUpdatePK.getName());
+
             boolean isUpdate = productRepository.update(productMapper.toDto(product));
             if (isUpdate) {
                 result = productMapper.toDomain(productRepository.findById(product.getId()).orElse(null));

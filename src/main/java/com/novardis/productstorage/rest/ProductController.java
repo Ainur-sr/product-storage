@@ -1,5 +1,7 @@
 package com.novardis.productstorage.rest;
 
+import com.novardis.productstorage.criteria.ProductCreatePK;
+import com.novardis.productstorage.criteria.ProductUpdatePK;
 import com.novardis.productstorage.domain.Product;
 import com.novardis.productstorage.service.ProductService;
 import io.swagger.annotations.ApiOperation;
@@ -26,15 +28,15 @@ public class ProductController {
 
     @ApiOperation("Создать товар")
     @PostMapping("/product")
-    public Product createProduct(@RequestBody Product product){
-        Product res = productService.createProduct(product);
+    public Product createProduct(@RequestBody ProductCreatePK productCreatePK){
+        Product res = productService.createProduct(productCreatePK);
         return res;
     }
 
     @ApiOperation("Обновить товар")
     @PutMapping("/product")
-    public Product updateProduct(@RequestBody Product product){
-        return productService.updateProduct(product);
+    public Product updateProduct(@RequestBody ProductUpdatePK productUpdatePK){
+        return productService.updateProduct(productUpdatePK);
     }
 
 
