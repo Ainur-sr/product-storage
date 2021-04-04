@@ -12,7 +12,7 @@ public class ProductAttributePK {
     private Long productId;
 
     @ApiModelProperty(value = "id словаря атрибутов")
-    private Long attributeDicId;
+    private Long dicId;
 
     @ApiModelProperty(value = "id атрибута")
     private Long attributeId;

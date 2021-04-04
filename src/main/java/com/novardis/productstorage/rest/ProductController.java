@@ -39,8 +39,6 @@ public class ProductController {
         return productService.updateProduct(productUpdatePK);
     }
 
-
-
     @ApiOperation("Удалить товар по id")
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProductById(@PathVariable("id") Long id) {

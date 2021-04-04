@@ -20,13 +20,14 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Long save(String attributeValTableName, String value, Long attributeDicId) {
-        String sqlQuery = String.format("insert into %s (value, attribute_dic_id) values(?, ?)", attributeValTableName);
+    public Long save(String attributeValTableName, String value, Long attributeDicId, Long attributeLinkId) {
+        final String sqlQuery = String.format("insert into %s (value, attribute_dic_id, attribute_link_id) values(?, ?, ?)", attributeValTableName);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
             stmt.setString(1, value);
             stmt.setLong(2, attributeDicId);
+            stmt.setLong(3, attributeLinkId);
             return stmt;
         }, keyHolder);
 

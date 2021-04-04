@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
 public class ProductAttributeLinkDto {
 
     private Long id;
-    private Long attributeValueId;
+    private Long attributeLinkId;
     private Long productId;
-    private Long attributeDicId;
+    private Long dicId;
 
 }

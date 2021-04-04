@@ -20,7 +20,6 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
         String query = String.format("select * from %s", dicTableName);
         return jdbcTemplate.query(
                 query,
-                new Object[]{dicTableName},
                 (rs, rowNum) -> {
                     DictionaryAttributeDto dictionaryAttributeDto = new DictionaryAttributeDto();
                     dictionaryAttributeDto

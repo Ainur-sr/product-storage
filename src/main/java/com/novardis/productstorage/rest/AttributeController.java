@@ -2,8 +2,7 @@ package com.novardis.productstorage.rest;
 
 import com.novardis.productstorage.criteria.ProductAttributePK;
 import com.novardis.productstorage.domain.Product;
-import com.novardis.productstorage.service.ProductAttributeServiceImpl;
-import com.novardis.productstorage.service.ProductService;
+import com.novardis.productstorage.service.ProductAttributeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AttributeController {
 
-    private final ProductAttributeServiceImpl productAttributeService;
+    private final ProductAttributeService productAttributeService;
 
     @ApiOperation("Добавить аттрибут к товару")
     @PostMapping("/attribute/add")
     public Product createProduct(@RequestBody ProductAttributePK productAttributePK){
         Product res = productAttributeService.addAttributeToProduct(productAttributePK);
-
         return res;
     }
 
