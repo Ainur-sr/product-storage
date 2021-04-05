@@ -56,20 +56,6 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
     }
 
 /*    @Override
-    public Long save(DictionaryAttributeValDto dictionaryAttributeValDto) {
-        String sqlQuery = "insert into attribute_01_value (value, attribute_01_dic_id) values(?, ?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
-            stmt.setString(1, dictionaryAttributeValDto.getAttributeValue());
-            stmt.setLong(2, dictionaryAttributeValDto.getAttributeId());
-            return stmt;
-        }, keyHolder);
-
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
-    }*/
-
-/*    @Override
     public boolean update(DictionaryAttributeValDto dictionaryAttributeValDto) {
         return jdbcTemplate.update("update attribute_01_value set value = ? where id = ?",
                 dictionaryAttributeValDto.getAttributeValue(),

@@ -38,13 +38,15 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
         String query = String.format("select * from %s where id = %d", dicTableName, attributeId);
         return jdbcTemplate.queryForObject(
                 query,
-                (rs, rowNum) -> Optional.of(new DictionaryAttributeDto(
-                                rs.getLong("id"),
-                                rs.getString("name"),
-                                rs.getString("description"),
-                                rs.getString("unit")
-                        )
-                )
+                (rs, rowNum) -> {
+                    DictionaryAttributeDto dto = new DictionaryAttributeDto();
+                    dto
+                            .setId(rs.getLong("id"))
+                            .setName(rs.getString("name"))
+                            .setDescription(rs.getString("description"))
+                            .setUnit(rs.getString("unit"));
+                    return Optional.of(dto);
+                }
         );
 
     }

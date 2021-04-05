@@ -11,8 +11,6 @@ public interface DictionaryAttributeValRepository {
 
     Optional<DictionaryAttributeValDto> findByProductId(String attributeValTableName, Long productId);
 
-//    Long save(DictionaryAttributeValDto dictionaryAttributeValDto);
-
 //    boolean update(DictionaryAttributeValDto dictionaryAttributeValDto);
 
 //    boolean deleteById(Long id);

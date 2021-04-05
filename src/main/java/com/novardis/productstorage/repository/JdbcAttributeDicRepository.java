@@ -37,14 +37,17 @@ public class JdbcAttributeDicRepository implements AttributeDicRepository {
     public Optional<AttributeDicDto> findById(Long id) {
         return jdbcTemplate.queryForObject(
                 "select * from attribute_dic where id = ?",
-                new Object[]{id},
-                (rs, rowNum) -> Optional.of(new AttributeDicDto(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("table_name"),
-                        rs.getString("value_table_name")
-                ))
+                (rs, rowNum) -> {
+                    AttributeDicDto dto = new AttributeDicDto();
+                    dto
+                            .setId(rs.getLong("id"))
+                            .setName(rs.getString("name"))
+                            .setDescription(rs.getString("description"))
+                            .setTableName(rs.getString("table_name"))
+                            .setTableName(rs.getString("value_table_name"));
+                    return Optional.of(dto);
+                },
+                id
         );
     }
 }

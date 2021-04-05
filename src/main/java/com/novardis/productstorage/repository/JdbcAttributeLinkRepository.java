@@ -19,9 +19,9 @@ public class JdbcAttributeLinkRepository implements AttributeLinkRepository {
     public Long createIndex() {
         String sqlQuery = "insert into attribute_link (id) values (default)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            return connection.prepareStatement(sqlQuery, new String[]{"id"});
-        }, keyHolder);
+        jdbcTemplate.update(
+                connection -> connection.prepareStatement(sqlQuery, new String[]{"id"}),
+                keyHolder);
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }

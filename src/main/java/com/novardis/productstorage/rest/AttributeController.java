@@ -26,16 +26,13 @@ public class AttributeController {
     @ApiOperation("Добавить аттрибут к товару")
     @PostMapping("/attribute/add")
     public Product createProductAttribute(@RequestBody @Valid ProductAttributeCreatePK param){
-        Product res = productAttributeService.addAttributeToProduct(param);
-        return res;
+        return productAttributeService.addAttributeToProduct(param);
     }
 
     @ApiOperation("Удалить аттрибут товара по id")
     @PostMapping("/attribute/delete")
     public Product deleteProductAttribute(@RequestBody @Valid ProductAttributeDeletePK param) {
-        Product res = productAttributeService.deleteAttributeProduct(param);
-
-        return res;
+        return productAttributeService.deleteAttributeProduct(param);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
