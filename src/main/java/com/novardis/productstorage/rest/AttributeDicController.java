@@ -35,7 +35,7 @@ public class AttributeDicController {
     public List<DictionaryAttribute> getAttributeDic(@PathVariable("id") Long id){
         List<DictionaryAttribute> resultList = null;
         if (id != null){
-            resultList = dictionaryAttributeService.getAttributeDicByDicId(id);
+            resultList = dictionaryAttributeService.getAllAttributeDicByDicId(id);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parameter 'id' is null");
         }

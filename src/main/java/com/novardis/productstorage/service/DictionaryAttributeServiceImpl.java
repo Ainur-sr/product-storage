@@ -24,7 +24,7 @@ public class DictionaryAttributeServiceImpl implements DictionaryAttributeServic
     private final DictionaryAttributeMapper dictionaryAttributeMapper;
 
     @Override
-    public List<DictionaryAttribute> getAttributeDicByDicId(Long dicId) {
+    public List<DictionaryAttribute> getAllAttributeDicByDicId(Long dicId) {
         List<DictionaryAttribute> dictionaryAttributes = null;
         AttributeDicDto attributeDicDto = attributeDicRepository.findById(dicId).orElse(null);
         if (attributeDicDto != null){
