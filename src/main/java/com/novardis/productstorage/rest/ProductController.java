@@ -9,10 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -28,20 +28,20 @@ public class ProductController {
 
     @ApiOperation("Получить список товаров")
     @GetMapping("/product/all")
-    public List<Product> getProducts(){
+    public List<Product> getProducts() {
         return productService.getAll();
     }
 
     @ApiOperation("Создать товар")
     @PostMapping("/product")
-    public Product createProduct(@RequestBody @Valid ProductCreatePK productCreatePK){
+    public Product createProduct(@RequestBody @Valid ProductCreatePK productCreatePK) {
         Product res = productService.createProduct(productCreatePK);
         return res;
     }
 
     @ApiOperation("Обновить товар")
     @PutMapping("/product")
-    public Product updateProduct(@RequestBody @Valid ProductUpdatePK productUpdatePK){
+    public Product updateProduct(@RequestBody @Valid ProductUpdatePK productUpdatePK) {
         return productService.updateProduct(productUpdatePK);
     }
 
@@ -51,10 +51,10 @@ public class ProductController {
         ResponseEntity responseEntity = null;
         if (id != null) {
             boolean result = productService.deleteProductById(id);
-            if (result){
+            if (result) {
                 responseEntity = new ResponseEntity<>(HttpStatus.OK);
             } else {
-               responseEntity = new ResponseEntity<>("Parameter 'id' is not correct", HttpStatus.BAD_REQUEST);
+                responseEntity = new ResponseEntity<>("Parameter 'id' is not correct", HttpStatus.BAD_REQUEST);
             }
         } else {
             responseEntity = new ResponseEntity<>("Parameter 'id' is empty", HttpStatus.BAD_REQUEST);
@@ -68,6 +68,8 @@ public class ProductController {
         Product result = null;
         if (id != null) {
             result = productService.getById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parameter 'id' is null");
         }
         return result;
     }
