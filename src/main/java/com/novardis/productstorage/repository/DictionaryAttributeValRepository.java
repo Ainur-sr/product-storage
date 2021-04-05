@@ -9,10 +9,8 @@ public interface DictionaryAttributeValRepository {
 
     Long save(String attributeValTableName, String value, Long attributeDicId, Long attributeLinkId, Long productId);
 
-    Optional<DictionaryAttributeValDto> findByProductId(String attributeValTableName, Long productId);
+    Optional<DictionaryAttributeValDto> findByProductIdAndAttributeDicId(String attributeValTableName, Long productId, Long attributeDicId);
 
-//    boolean update(DictionaryAttributeValDto dictionaryAttributeValDto);
-
-//    boolean deleteById(Long id);
+    boolean updateValue(String attributeValTableName, String value, Long id);
 
 }

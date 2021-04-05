@@ -36,8 +36,8 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
     }
 
     @Override
-    public Optional<DictionaryAttributeValDto> findByProductId(String attributeValTableName, Long productId) {
-        final String sqlQuery = String.format("select id, value, attribute_dic_id, attribute_link_id, product_id from %s where product_id = ?",
+    public Optional<DictionaryAttributeValDto> findByProductIdAndAttributeDicId(String attributeValTableName, Long productId, Long attributeDicId) {
+        final String sqlQuery = String.format("select id, value, attribute_dic_id, attribute_link_id, product_id from %s where product_id = ? and attribute_dic_id = ?",
                 attributeValTableName);
         return jdbcTemplate.queryForObject(
                 sqlQuery,
@@ -51,20 +51,17 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
                             .setProductId(rs.getLong("product_id"));
                     return Optional.of(dto);
                 },
-                productId
+                productId,
+                attributeDicId
         );
     }
 
-/*    @Override
-    public boolean update(DictionaryAttributeValDto dictionaryAttributeValDto) {
-        return jdbcTemplate.update("update attribute_01_value set value = ? where id = ?",
-                dictionaryAttributeValDto.getAttributeValue(),
-                dictionaryAttributeValDto.getAttributeId()) > 0;
-    }*/
+    @Override
+    public boolean updateValue(String attributeValTableName, String value, Long id) {
+        final String sqlQuery = String.format("update %s set value = ? where id = ?", attributeValTableName);
+        return jdbcTemplate.update(sqlQuery, value, id) > 0;
+    }
 
-//    @Override
-//    public boolean deleteById(Long id) {
-//        return jdbcTemplate.update("delete from attribute_01_value where id = ?", id) > 0;
-//    }
+
 
 }

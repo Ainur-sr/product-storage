@@ -1,6 +1,6 @@
 package com.novardis.productstorage.rest;
 
-import com.novardis.productstorage.criteria.ProductAttributeCreatePK;
+import com.novardis.productstorage.criteria.ProductAttributePK;
 import com.novardis.productstorage.criteria.ProductAttributeDeletePK;
 import com.novardis.productstorage.domain.Product;
 import com.novardis.productstorage.service.ProductAttributeService;
@@ -25,14 +25,20 @@ public class AttributeController {
 
     @ApiOperation("Добавить аттрибут к товару")
     @PostMapping("/attribute/add")
-    public Product createProductAttribute(@RequestBody @Valid ProductAttributeCreatePK param){
-        return productAttributeService.addAttributeToProduct(param);
+    public Product createProductAttribute(@RequestBody @Valid ProductAttributePK param){
+        return productAttributeService.addProductAttribute(param);
+    }
+
+    @ApiOperation("Обновить аттрибут у товара")
+    @PostMapping("/attribute/update")
+    public Product updateProductAttribute(@RequestBody @Valid ProductAttributePK param){
+        return productAttributeService.updateProductAttribute(param);
     }
 
     @ApiOperation("Удалить аттрибут товара по id")
     @PostMapping("/attribute/delete")
     public Product deleteProductAttribute(@RequestBody @Valid ProductAttributeDeletePK param) {
-        return productAttributeService.deleteAttributeProduct(param);
+        return productAttributeService.deleteProductAttribute(param);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

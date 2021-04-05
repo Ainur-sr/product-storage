@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @ApiModel(value = "Параметры создания аттрибута к продукту")
-public class ProductAttributeCreatePK {
+public class ProductAttributePK {
 
     @NotNull(message = "Must not be null")
     @ApiModelProperty(value = "id продукта")
