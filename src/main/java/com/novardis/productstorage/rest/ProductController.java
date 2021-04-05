@@ -9,9 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/api/v1")
@@ -28,14 +34,14 @@ public class ProductController {
 
     @ApiOperation("Создать товар")
     @PostMapping("/product")
-    public Product createProduct(@RequestBody ProductCreatePK productCreatePK){
+    public Product createProduct(@RequestBody @Valid ProductCreatePK productCreatePK){
         Product res = productService.createProduct(productCreatePK);
         return res;
     }
 
     @ApiOperation("Обновить товар")
     @PutMapping("/product")
-    public Product updateProduct(@RequestBody ProductUpdatePK productUpdatePK){
+    public Product updateProduct(@RequestBody @Valid ProductUpdatePK productUpdatePK){
         return productService.updateProduct(productUpdatePK);
     }
 
@@ -64,6 +70,18 @@ public class ProductController {
             result = productService.getById(id);
         }
         return result;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 
 }

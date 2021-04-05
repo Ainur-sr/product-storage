@@ -4,20 +4,21 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-@Data
-@ApiModel(value = "Параметры аттрибута и продукта")
-public class ProductAttributePK {
+import javax.validation.constraints.NotNull;
 
+@Data
+@ApiModel(value = "Параметры удаления аттрибута у продукта")
+public class ProductAttributeDeletePK {
+
+    @NotNull(message = "Must not be null")
     @ApiModelProperty(value = "id продукта")
     private Long productId;
 
+    @NotNull(message = "Must not be null")
     @ApiModelProperty(value = "id словаря атрибутов")
     private Long dicId;
 
+    @NotNull(message = "Must not be null")
     @ApiModelProperty(value = "id атрибута")
     private Long attributeId;
-
-    @ApiModelProperty(value = "Значение атрибута")
-    private String attributeValue;
-
 }

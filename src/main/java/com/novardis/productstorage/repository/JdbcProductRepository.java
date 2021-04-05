@@ -58,12 +58,12 @@ public class JdbcProductRepository implements ProductRepository {
     public Optional<ProductDto> findById(Long id) {
         return jdbcTemplate.queryForObject(
                 "select * from product where id = ?",
-                new Object[]{id},
                 (rs, rowNum) ->
                         Optional.of(new ProductDto(
                                 rs.getLong("id"),
                                 rs.getString("name")
-                        ))
+                        )),
+                id
         );
     }
 }

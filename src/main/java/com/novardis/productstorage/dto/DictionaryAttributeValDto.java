@@ -14,4 +14,5 @@ public class DictionaryAttributeValDto {
     private String attributeValue;
     private Long attributeDicId;
     private Long attributeLinkId;
+    private Long productId;
 }

@@ -25,4 +25,9 @@ public class JdbcAttributeLinkRepository implements AttributeLinkRepository {
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return jdbcTemplate.update("delete from attribute_link where id = ?", id) > 0;
+    }
 }

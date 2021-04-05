@@ -9,7 +9,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,18 +19,40 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Long save(String attributeValTableName, String value, Long attributeDicId, Long attributeLinkId) {
-        final String sqlQuery = String.format("insert into %s (value, attribute_dic_id, attribute_link_id) values(?, ?, ?)", attributeValTableName);
+    public Long save(String attributeValTableName, String value, Long attributeDicId, Long attributeLinkId, Long productId) {
+        final String sqlQuery = String.format("insert into %s (value, attribute_dic_id, attribute_link_id, product_id) values(?, ?, ?, ?)",
+                attributeValTableName);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
             stmt.setString(1, value);
             stmt.setLong(2, attributeDicId);
             stmt.setLong(3, attributeLinkId);
+            stmt.setLong(4, productId);
             return stmt;
         }, keyHolder);
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    @Override
+    public Optional<DictionaryAttributeValDto> findByProductId(String attributeValTableName, Long productId) {
+        final String sqlQuery = String.format("select id, value, attribute_dic_id, attribute_link_id, product_id from %s where product_id = ?",
+                attributeValTableName);
+        return jdbcTemplate.queryForObject(
+                sqlQuery,
+                (rs, rowNum) -> {
+                    DictionaryAttributeValDto dto = new DictionaryAttributeValDto();
+                    dto
+                            .setAttributeId(rs.getLong("id"))
+                            .setAttributeValue(rs.getString("value"))
+                            .setAttributeDicId(rs.getLong("attribute_dic_id"))
+                            .setAttributeLinkId(rs.getLong("attribute_link_id"))
+                            .setProductId(rs.getLong("product_id"));
+                    return Optional.of(dto);
+                },
+                productId
+        );
     }
 
 /*    @Override
@@ -58,20 +79,6 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
 //    @Override
 //    public boolean deleteById(Long id) {
 //        return jdbcTemplate.update("delete from attribute_01_value where id = ?", id) > 0;
-//    }
-
-//    @Override
-//    public Optional<DictionaryAttributeValDto> findByTableNameAndId(Long id) {
-//        String query = String.format("select * from %s where id = %d", dicTableName, attributeId);
-//        return jdbcTemplate.queryForObject(
-//                "select * from attribute_one_dic_view where attribute_id = ?",
-//                new Object[]{id},
-//                (rs, rowNum) -> Optional.of(new DictionaryAttributeValDto(
-//                        rs.getLong("id"),
-//                        rs.getString("value"),
-//                        rs.getLong("attribute_dic_id"))
-//                )
-//        );
 //    }
 
 }
