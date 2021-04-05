@@ -48,7 +48,7 @@ public class ProductController {
     @ApiOperation("Удалить товар по id")
     @DeleteMapping("/product/{id}")
     public ResponseEntity<String> deleteProductById(@PathVariable("id") Long id) {
-        ResponseEntity responseEntity = null;
+        ResponseEntity<String> responseEntity = null;
         if (id != null) {
             boolean result = productService.deleteProductById(id);
             if (result) {

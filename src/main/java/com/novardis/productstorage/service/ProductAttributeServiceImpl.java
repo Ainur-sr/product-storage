@@ -3,10 +3,7 @@ package com.novardis.productstorage.service;
 import com.novardis.productstorage.criteria.ProductAttributeCreatePK;
 import com.novardis.productstorage.criteria.ProductAttributeDeletePK;
 import com.novardis.productstorage.domain.Product;
-import com.novardis.productstorage.dto.AttributeDicDto;
-import com.novardis.productstorage.dto.DictionaryAttributeDto;
-import com.novardis.productstorage.dto.ProductAttributeLinkDto;
-import com.novardis.productstorage.dto.ProductDto;
+import com.novardis.productstorage.dto.*;
 import com.novardis.productstorage.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -46,7 +45,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
             Long attributeValueId = dictionaryAttributeValRepository.save(
                     attributeDicDto.getValueTableName(),
                     param.getAttributeValue(),
-                    param.getDicId(),
+                    param.getAttributeId(),
                     index,
                     param.getProductId());
 
@@ -75,11 +74,15 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
         findProductById(param.getProductId());
         //словарь словарей
         final AttributeDicDto attributeDicDto = findAttributeDicDto(param.getDicId());
+        //проверка с таблицы атрибутов
+        final DictionaryAttributeValDto dictionaryAttributeValDto = findDictionaryAttributeValDto(attributeDicDto.getValueTableName(), param.getProductId());
+        checkDictionaryAttributeValDto(dictionaryAttributeValDto, param, attributeDicDto.getValueTableName());
 
+        boolean isDeleted = attributeLinkRepository.deleteById(dictionaryAttributeValDto.getAttributeLinkId());
 
-
-        boolean isDeleted = attributeLinkRepository.deleteById(11L);
-
+        if (isDeleted){
+            resultProduct = productService.getById(param.getProductId());
+        }
         return resultProduct;
     }
 
@@ -99,6 +102,21 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
         return dictionaryAttributeRepository.getByDicNameAndId(attributeDicDto.getTableName(), attributeId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format("Can't find attribute in table %s with id = %d", attributeDicDto.getName(), attributeId)));
+    }
+
+    private DictionaryAttributeValDto findDictionaryAttributeValDto(String attributeValTableName, Long productId){
+       return dictionaryAttributeValRepository.findByProductId(attributeValTableName, productId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format("Can't find attribute in table %s with productId = %d", attributeValTableName, productId)));
+    }
+
+    private void checkDictionaryAttributeValDto(DictionaryAttributeValDto dictionaryAttributeValDto, ProductAttributeDeletePK param, String valTableName){
+        if (!param.getAttributeId().equals(dictionaryAttributeValDto.getAttributeDicId())){
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Can't find attribute with attributeId = %d in table %s with productId = %d",
+                            param.getAttributeId(), valTableName, param.getProductId()
+                    ));
+        }
     }
 
 

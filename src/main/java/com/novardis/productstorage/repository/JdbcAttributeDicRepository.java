@@ -44,7 +44,7 @@ public class JdbcAttributeDicRepository implements AttributeDicRepository {
                             .setName(rs.getString("name"))
                             .setDescription(rs.getString("description"))
                             .setTableName(rs.getString("table_name"))
-                            .setTableName(rs.getString("value_table_name"));
+                            .setValueTableName(rs.getString("value_table_name"));
                     return Optional.of(dto);
                 },
                 id
