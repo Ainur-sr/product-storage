@@ -17,7 +17,7 @@ public class JdbcAttributeLinkRepository implements AttributeLinkRepository {
 
     @Override
     public Long createIndex() {
-        String sqlQuery = "insert into attribute_link (id) values (default)";
+        final String sqlQuery = "insert into attribute_link (id) values (default)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> connection.prepareStatement(sqlQuery, new String[]{"id"}),
@@ -27,7 +27,15 @@ public class JdbcAttributeLinkRepository implements AttributeLinkRepository {
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        return jdbcTemplate.update("delete from attribute_link where id = ?", id) > 0;
+    public boolean deleteByAttributeId(Long attributeId) {
+        return jdbcTemplate.update("delete from attribute_link where id = ?", attributeId) > 0;
+    }
+
+    @Override
+    public boolean deleteByProductId(Long productId) {
+        final String sqlQuery = "delete from attribute_link al where al.id in " +
+                "(select pal.attribute_link_id from product_attribute_link pal where product_id = ?)";
+
+        return jdbcTemplate.update(sqlQuery, productId) > 0;
     }
 }

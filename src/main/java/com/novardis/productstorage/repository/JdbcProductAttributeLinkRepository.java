@@ -31,4 +31,5 @@ public class JdbcProductAttributeLinkRepository implements ProductAttributeLinkR
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
+
 }

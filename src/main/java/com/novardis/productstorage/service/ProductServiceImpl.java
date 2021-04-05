@@ -8,11 +8,14 @@ import com.novardis.productstorage.dto.ProductAttributeViewDto;
 import com.novardis.productstorage.dto.ProductDto;
 import com.novardis.productstorage.mapper.AttributeMapper;
 import com.novardis.productstorage.mapper.ProductMapper;
+import com.novardis.productstorage.repository.AttributeLinkRepository;
 import com.novardis.productstorage.repository.AttributeRepository;
+import com.novardis.productstorage.repository.ProductAttributeLinkRepository;
 import com.novardis.productstorage.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
@@ -26,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final AttributeRepository attributeRepository;
+    private final ProductAttributeLinkRepository productAttributeLinkRepository;
+    private final AttributeLinkRepository attributeLinkRepository;
 
     private final ProductMapper productMapper;
     private final AttributeMapper attributeMapper;
@@ -53,6 +58,7 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
+    @Transactional
     @Override
     public Product createProduct(ProductCreatePK productCreatePK) {
         Product product = new Product();
@@ -66,6 +72,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional
     @Override
     public Product updateProduct(ProductUpdatePK productUpdatePK) {
         Product result = null;
@@ -83,16 +90,18 @@ public class ProductServiceImpl implements ProductService {
         return result;
     }
 
+    @Transactional
     @Override
-    public boolean deleteProductById(Long id) {
-        return productRepository.deleteById(id);
+    public boolean deleteProductById(Long productId) {
+        attributeLinkRepository.deleteByProductId(productId);
+        return productRepository.deleteById(productId);
     }
 
     @Override
-    public Product getById(Long id) {
-        Product product = productMapper.toDomain(productRepository.findById(id).orElse(null));
+    public Product getById(Long productId) {
+        Product product = productMapper.toDomain(productRepository.findById(productId).orElse(null));
         if (product != null) {
-            List<ProductAttributeViewDto> productAttributeViewDtoList = attributeRepository.findAllByProductId(id);
+            List<ProductAttributeViewDto> productAttributeViewDtoList = attributeRepository.findAllByProductId(productId);
             if (!CollectionUtils.isEmpty(productAttributeViewDtoList)) {
                 List<Attribute> attributes = productAttributeViewDtoList.stream().map(attributeMapper::toDomain).collect(Collectors.toList());
                 product.setAttributes(attributes);

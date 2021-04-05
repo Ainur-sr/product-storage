@@ -39,7 +39,6 @@ public class JdbcProductAttributeViewRepository implements AttributeRepository {
                     return productAttributeViewDto;
                 }
         );
-
         return resultList;
     }
 

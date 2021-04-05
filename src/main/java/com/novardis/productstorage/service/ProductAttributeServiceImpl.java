@@ -103,7 +103,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
         //запись с таблицы атрибутов
         final DictionaryAttributeValDto dictionaryAttributeValDto = findDictionaryAttributeValDto(attributeDicDto.getValueTableName(), param.getProductId(), param.getAttributeId());
 
-        final boolean isDeleted = attributeLinkRepository.deleteById(dictionaryAttributeValDto.getAttributeLinkId());
+        final boolean isDeleted = attributeLinkRepository.deleteByAttributeId(dictionaryAttributeValDto.getAttributeLinkId());
 
         if (isDeleted) {
             resultProduct = productService.getById(param.getProductId());
