@@ -21,7 +21,7 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public Long save(ProductDto productDto) {
-        String sqlQuery = "insert into product (name) values(?)";
+        final String sqlQuery = "insert into product (name) values(?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});

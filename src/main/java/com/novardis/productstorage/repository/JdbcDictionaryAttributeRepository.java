@@ -17,7 +17,7 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
 
     @Override
     public List<DictionaryAttributeDto> getAllByDicName(String dicTableName) {
-        String query = String.format("select * from %s", dicTableName);
+        final String query = String.format("select * from %s", dicTableName);
         return jdbcTemplate.query(
                 query,
                 (rs, rowNum) -> {
@@ -35,7 +35,7 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
 
     @Override
     public Optional<DictionaryAttributeDto> getByDicNameAndId(String dicTableName, Long attributeId) {
-        String query = String.format("select * from %s where id = %d", dicTableName, attributeId);
+        final String query = String.format("select * from %s where id = %d", dicTableName, attributeId);
         return jdbcTemplate.queryForObject(
                 query,
                 (rs, rowNum) -> {
@@ -48,6 +48,5 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
                     return Optional.of(dto);
                 }
         );
-
     }
 }

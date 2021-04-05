@@ -20,7 +20,7 @@ public class JdbcProductAttributeViewRepository implements AttributeRepository {
 
     @Override
     public List<ProductAttributeViewDto> findAllByProductId(Long id) {
-        SqlParameterSource parameters = new MapSqlParameterSource("id", id);
+        final SqlParameterSource parameters = new MapSqlParameterSource("id", id);
         List<ProductAttributeViewDto> resultList = namedJdbcTemplate.query(
                 "select * from product_attribute_view where product_id = :id",
                 parameters,

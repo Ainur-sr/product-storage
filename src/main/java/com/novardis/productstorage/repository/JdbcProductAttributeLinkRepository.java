@@ -19,7 +19,7 @@ public class JdbcProductAttributeLinkRepository implements ProductAttributeLinkR
 
     @Override
     public Long save(ProductAttributeLinkDto productAttributeLinkDto) {
-        String sqlQuery = "insert into product_attribute_link (attribute_link_id, product_id, attribute_dic_id) values(?, ?, ?)";
+        final String sqlQuery = "insert into product_attribute_link (attribute_link_id, product_id, attribute_dic_id) values(?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
