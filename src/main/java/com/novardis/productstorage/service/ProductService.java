@@ -18,5 +18,8 @@ public interface ProductService {
 
     Product getById(Long productId);
 
-    List<Product> getAllByName(String productName);
+    List<Product> getAllByProductName(String productName);
+
+    List<Product> getAllByAttributeName(String attributeName);
+
 }

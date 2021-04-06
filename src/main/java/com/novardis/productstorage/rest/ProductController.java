@@ -75,10 +75,16 @@ public class ProductController {
         return result;
     }
 
-    @ApiOperation("Поиск товаров по имени")
+    @ApiOperation("Поиск товаров по наименованию")
     @GetMapping("/product/search")
-    public List<Product> searchProductsByName(@ApiParam(value = "Текст для поиска по имени") @RequestParam String productName) {
-        return productService.getAllByName(productName);
+    public List<Product> searchProductsByName(@ApiParam(value = "Текст для поиска по наименованию") @RequestParam String productName) {
+        return productService.getAllByProductName(productName);
+    }
+
+    @ApiOperation("Поиск товаров по наименованию атрибута")
+    @GetMapping("/product/attribute/search")
+    public List<Product> searchProductsByAttributeName(@ApiParam(value = "Текст для поиска по наименованию атрибута") @RequestParam String attributeName) {
+        return productService.getAllByAttributeName(attributeName);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

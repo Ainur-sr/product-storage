@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
                 Map<Long, List<ProductAttributeViewDto>> attributeDtoMap = productAttributeViewDtoList.stream().collect(Collectors.groupingBy(ProductAttributeViewDto::getProductId));
                 products.forEach(product -> {
                     if (!CollectionUtils.isEmpty(attributeDtoMap.get(product.getId())))
-                    product.setAttributes(attributeDtoMap.get(product.getId()).stream().map(attributeMapper::toDomain).collect(Collectors.toList()));
+                        product.setAttributes(attributeDtoMap.get(product.getId()).stream().map(attributeMapper::toDomain).collect(Collectors.toList()));
                 });
             }
         } else {
@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllByName(String productName) {
+    public List<Product> getAllByProductName(String productName) {
         List<Product> products = null;
         List<ProductDto> productDtoList = productRepository.findAllByName(productName);
         if (!CollectionUtils.isEmpty(productDtoList)) {
@@ -126,6 +126,35 @@ public class ProductServiceImpl implements ProductService {
                     if (!CollectionUtils.isEmpty(attributeDtoMap.get(product.getId())))
                         product.setAttributes(attributeDtoMap.get(product.getId()).stream().map(attributeMapper::toDomain).collect(Collectors.toList()));
                 });
+            }
+        } else {
+            products = Collections.emptyList();
+        }
+
+        return products;
+    }
+
+    @Override
+    public List<Product> getAllByAttributeName(String attributeName) {
+        List<Product> products = null;
+        List<ProductAttributeViewDto> productAttributeViewDtoList = attributeRepository.findAllByAttributeName(attributeName);
+        if (!CollectionUtils.isEmpty(productAttributeViewDtoList)) {
+            Set<Long> productIdSet = productAttributeViewDtoList.stream().map(ProductAttributeViewDto::getProductId).collect(Collectors.toSet());
+            List<ProductDto> productDtoList = productRepository.findAllByIdIn(productIdSet);
+            if (!CollectionUtils.isEmpty(productDtoList)) {
+                Map<Long, List<ProductAttributeViewDto>> attributeDtoMap = productAttributeViewDtoList.stream().collect(Collectors.groupingBy(ProductAttributeViewDto::getProductId));
+
+                products = productDtoList.stream()
+                        .map(productMapper::toDomain)
+                        .collect(Collectors.toList());
+
+                products.forEach(product -> {
+                    if (!CollectionUtils.isEmpty(attributeDtoMap.get(product.getId())))
+                        product.setAttributes(attributeDtoMap.get(product.getId()).stream().map(attributeMapper::toDomain).collect(Collectors.toList()));
+                });
+
+             } else {
+                products = Collections.emptyList();
             }
         } else {
             products = Collections.emptyList();

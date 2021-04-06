@@ -56,6 +56,24 @@ public class JdbcProductAttributeViewRepository implements AttributeRepository {
     }
 
     @Override
+    public List<ProductAttributeViewDto> findAllByAttributeName(String attributeName) {
+        final String query = "select * from product_attribute_view where lower(attribute_name) like ?";
+        return jdbcTemplate.query(
+                query,
+                (rs, rowNum) -> new ProductAttributeViewDto()
+                        .setProductId(rs.getLong("product_id"))
+                        .setProductName(rs.getString("product_name"))
+                        .setDicId(rs.getLong("dic_id"))
+                        .setAttributeId(rs.getLong("attribute_id"))
+                        .setAttributeName(rs.getString("attribute_name"))
+                        .setAttributeDescription(rs.getString("attribute_description"))
+                        .setAttributeUnit(rs.getString("attribute_unit"))
+                        .setAttributeValue(rs.getString("attribute_value")),
+                "%" + attributeName.toLowerCase() + "%"
+        );
+    }
+
+    @Override
     public List<ProductAttributeViewDto> findAll() {
         return jdbcTemplate.query(
                 "select * from product_attribute_view",
@@ -70,4 +88,5 @@ public class JdbcProductAttributeViewRepository implements AttributeRepository {
                         .setAttributeValue(rs.getString("attribute_value"))
         );
     }
+
 }

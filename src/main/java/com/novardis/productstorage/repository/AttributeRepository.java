@@ -11,6 +11,8 @@ public interface AttributeRepository {
 
     List<ProductAttributeViewDto> findAllByProductIdIn(Collection<Long> ids);
 
+    List<ProductAttributeViewDto> findAllByAttributeName(String attributeName);
+
     List<ProductAttributeViewDto> findAll();
 
 }

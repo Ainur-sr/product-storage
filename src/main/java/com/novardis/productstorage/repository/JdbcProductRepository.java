@@ -1,14 +1,19 @@
 package com.novardis.productstorage.repository;
 
+import com.novardis.productstorage.dto.ProductAttributeViewDto;
 import com.novardis.productstorage.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,6 +23,7 @@ import java.util.Optional;
 public class JdbcProductRepository implements ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     @Override
     public Long save(ProductDto productDto) {
@@ -54,13 +60,25 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public List<ProductDto> findAllByName(String productName) {
-        final String query = "select * from product where name like ?";
+        final String query = "select * from product where lower(name) like ?";
         return jdbcTemplate.query(
                 query,
                 (rs, rowNum) -> new ProductDto()
                         .setId(rs.getLong("id"))
                         .setName(rs.getString("name")),
-                "%" + productName + "%"
+                "%" + productName.toLowerCase() + "%"
+        );
+    }
+
+    @Override
+    public List<ProductDto> findAllByIdIn(Collection<Long> ids) {
+        final SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        return namedJdbcTemplate.query(
+                "select * from product where id in (:ids)",
+                parameters,
+                (rs, rowNum) -> new ProductDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
         );
     }
 
