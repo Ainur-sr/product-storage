@@ -41,16 +41,13 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
                 attributeValTableName);
         return jdbcTemplate.queryForObject(
                 sqlQuery,
-                (rs, rowNum) -> {
-                    DictionaryAttributeValDto dto = new DictionaryAttributeValDto();
-                    dto
-                            .setAttributeId(rs.getLong("id"))
-                            .setAttributeValue(rs.getString("value"))
-                            .setAttributeDicId(rs.getLong("attribute_dic_id"))
-                            .setAttributeLinkId(rs.getLong("attribute_link_id"))
-                            .setProductId(rs.getLong("product_id"));
-                    return Optional.of(dto);
-                },
+                (rs, rowNum) -> Optional.of(new DictionaryAttributeValDto()
+                        .setAttributeId(rs.getLong("id"))
+                        .setAttributeValue(rs.getString("value"))
+                        .setAttributeDicId(rs.getLong("attribute_dic_id"))
+                        .setAttributeLinkId(rs.getLong("attribute_link_id"))
+                        .setProductId(rs.getLong("product_id"))
+                ),
                 productId,
                 attributeDicId
         );
@@ -61,7 +58,6 @@ public class JdbcDictionaryAttributeValRepository implements DictionaryAttribute
         final String sqlQuery = String.format("update %s set value = ? where id = ?", attributeValTableName);
         return jdbcTemplate.update(sqlQuery, value, id) > 0;
     }
-
 
 
 }

@@ -20,16 +20,11 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
         final String query = String.format("select * from %s", dicTableName);
         return jdbcTemplate.query(
                 query,
-                (rs, rowNum) -> {
-                    DictionaryAttributeDto dictionaryAttributeDto = new DictionaryAttributeDto();
-                    dictionaryAttributeDto
-                            .setId(rs.getLong("id"))
-                            .setName(rs.getString("name"))
-                            .setDescription(rs.getString("description"))
-                            .setUnit(rs.getString("unit"));
-
-                    return dictionaryAttributeDto;
-                }
+                (rs, rowNum) -> new DictionaryAttributeDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
+                        .setDescription(rs.getString("description"))
+                        .setUnit(rs.getString("unit"))
         );
     }
 
@@ -38,15 +33,11 @@ public class JdbcDictionaryAttributeRepository implements DictionaryAttributeRep
         final String query = String.format("select * from %s where id = %d", dicTableName, attributeId);
         return jdbcTemplate.queryForObject(
                 query,
-                (rs, rowNum) -> {
-                    DictionaryAttributeDto dto = new DictionaryAttributeDto();
-                    dto
-                            .setId(rs.getLong("id"))
-                            .setName(rs.getString("name"))
-                            .setDescription(rs.getString("description"))
-                            .setUnit(rs.getString("unit"));
-                    return Optional.of(dto);
-                }
+                (rs, rowNum) -> Optional.of(new DictionaryAttributeDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
+                        .setDescription(rs.getString("description"))
+                        .setUnit(rs.getString("unit")))
         );
     }
 }

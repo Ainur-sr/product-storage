@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-@AllArgsConstructor
 @NoArgsConstructor
 public class DictionaryAttributeDto {
 

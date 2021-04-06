@@ -46,11 +46,9 @@ public class JdbcProductRepository implements ProductRepository {
     public List<ProductDto> findAll() {
         return jdbcTemplate.query(
                 "select * from product",
-                (rs, rowNum) ->
-                        new ProductDto(
-                                rs.getLong("id"),
-                                rs.getString("name")
-                        )
+                (rs, rowNum) -> new ProductDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
         );
     }
 
@@ -58,11 +56,10 @@ public class JdbcProductRepository implements ProductRepository {
     public Optional<ProductDto> findById(Long id) {
         return jdbcTemplate.queryForObject(
                 "select * from product where id = ?",
-                (rs, rowNum) ->
-                        Optional.of(new ProductDto(
-                                rs.getLong("id"),
-                                rs.getString("name")
-                        )),
+                (rs, rowNum) -> Optional.of(new ProductDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
+                ),
                 id
         );
     }

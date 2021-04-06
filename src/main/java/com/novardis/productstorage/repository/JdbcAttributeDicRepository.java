@@ -19,17 +19,12 @@ public class JdbcAttributeDicRepository implements AttributeDicRepository {
     public List<AttributeDicDto> findAll() {
         return jdbcTemplate.query(
                 "select * from attribute_dic",
-                (rs, rowNum) -> {
-                    AttributeDicDto attributeDicDto = new AttributeDicDto();
-                    attributeDicDto
-                            .setId(rs.getLong("id"))
-                            .setName(rs.getString("name"))
-                            .setDescription(rs.getString("description"))
-                            .setTableName(rs.getString("table_name"))
-                            .setValueTableName(rs.getString("value_table_name"));
-
-                    return attributeDicDto;
-                }
+                (rs, rowNum) -> new AttributeDicDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
+                        .setDescription(rs.getString("description"))
+                        .setTableName(rs.getString("table_name"))
+                        .setValueTableName(rs.getString("value_table_name"))
         );
     }
 
@@ -37,16 +32,13 @@ public class JdbcAttributeDicRepository implements AttributeDicRepository {
     public Optional<AttributeDicDto> findById(Long id) {
         return jdbcTemplate.queryForObject(
                 "select * from attribute_dic where id = ?",
-                (rs, rowNum) -> {
-                    AttributeDicDto dto = new AttributeDicDto();
-                    dto
-                            .setId(rs.getLong("id"))
-                            .setName(rs.getString("name"))
-                            .setDescription(rs.getString("description"))
-                            .setTableName(rs.getString("table_name"))
-                            .setValueTableName(rs.getString("value_table_name"));
-                    return Optional.of(dto);
-                },
+                (rs, rowNum) -> Optional.of(new AttributeDicDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name"))
+                        .setDescription(rs.getString("description"))
+                        .setTableName(rs.getString("table_name"))
+                        .setValueTableName(rs.getString("value_table_name"))
+                ),
                 id
         );
     }

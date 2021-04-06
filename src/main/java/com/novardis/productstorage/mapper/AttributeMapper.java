@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AttributeMapper {
 
-    public Attribute toDomain(ProductAttributeViewDto dto){
+    public Attribute toDomain(ProductAttributeViewDto dto) {
         Attribute attribute = new Attribute();
-        if (dto != null){
+        if (dto != null) {
             attribute
                     .setAttributeId(dto.getAttributeId())
                     .setDicId(dto.getDicId())

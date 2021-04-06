@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AttributeDicMapper {
 
-    public AttributeDic toDomain(AttributeDicDto dto){
+    public AttributeDic toDomain(AttributeDicDto dto) {
         AttributeDic attributeDic = new AttributeDic();
-        if (dto != null){
+        if (dto != null) {
             attributeDic
                     .setId(dto.getId())
                     .setName(dto.getName())

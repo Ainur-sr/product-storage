@@ -21,45 +21,34 @@ public class JdbcProductAttributeViewRepository implements AttributeRepository {
     @Override
     public List<ProductAttributeViewDto> findAllByProductId(Long id) {
         final SqlParameterSource parameters = new MapSqlParameterSource("id", id);
-        List<ProductAttributeViewDto> resultList = namedJdbcTemplate.query(
+        return namedJdbcTemplate.query(
                 "select * from product_attribute_view where product_id = :id",
                 parameters,
-                (rs, rowNum) -> {
-                    ProductAttributeViewDto productAttributeViewDto = new ProductAttributeViewDto();
-                    productAttributeViewDto
-                            .setProductId(rs.getLong("product_id"))
-                            .setProductName(rs.getString("product_name"))
-                            .setDicId(rs.getLong("dic_id"))
-                            .setAttributeId(rs.getLong("attribute_id"))
-                            .setAttributeName(rs.getString("attribute_name"))
-                            .setAttributeDescription(rs.getString("attribute_description"))
-                            .setAttributeUnit(rs.getString("attribute_unit"))
-                            .setAttributeValue(rs.getString("attribute_value"));
-
-                    return productAttributeViewDto;
-                }
+                (rs, rowNum) -> new ProductAttributeViewDto()
+                        .setProductId(rs.getLong("product_id"))
+                        .setProductName(rs.getString("product_name"))
+                        .setDicId(rs.getLong("dic_id"))
+                        .setAttributeId(rs.getLong("attribute_id"))
+                        .setAttributeName(rs.getString("attribute_name"))
+                        .setAttributeDescription(rs.getString("attribute_description"))
+                        .setAttributeUnit(rs.getString("attribute_unit"))
+                        .setAttributeValue(rs.getString("attribute_value"))
         );
-        return resultList;
     }
 
     @Override
     public List<ProductAttributeViewDto> findAll() {
         return jdbcTemplate.query(
                 "select * from product_attribute_view",
-                (rs, rowNum) ->{
-                    ProductAttributeViewDto productAttributeViewDto = new ProductAttributeViewDto();
-                    productAttributeViewDto
-                            .setProductId(rs.getLong("product_id"))
-                            .setProductName(rs.getString("product_name"))
-                            .setDicId(rs.getLong("dic_id"))
-                            .setAttributeId(rs.getLong("attribute_id"))
-                            .setAttributeName(rs.getString("attribute_name"))
-                            .setAttributeDescription(rs.getString("attribute_description"))
-                            .setAttributeUnit(rs.getString("attribute_unit"))
-                            .setAttributeValue(rs.getString("attribute_value"));
-
-                    return productAttributeViewDto;
-                }
+                (rs, rowNum) -> new ProductAttributeViewDto()
+                        .setProductId(rs.getLong("product_id"))
+                        .setProductName(rs.getString("product_name"))
+                        .setDicId(rs.getLong("dic_id"))
+                        .setAttributeId(rs.getLong("attribute_id"))
+                        .setAttributeName(rs.getString("attribute_name"))
+                        .setAttributeDescription(rs.getString("attribute_description"))
+                        .setAttributeUnit(rs.getString("attribute_unit"))
+                        .setAttributeValue(rs.getString("attribute_value"))
         );
     }
 }
