@@ -18,5 +18,5 @@ public interface ProductService {
 
     Product getById(Long productId);
 
-
+    List<Product> getAllByName(String productName);
 }

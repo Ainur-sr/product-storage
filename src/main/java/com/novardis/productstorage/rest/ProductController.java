@@ -5,6 +5,7 @@ import com.novardis.productstorage.criteria.ProductUpdatePK;
 import com.novardis.productstorage.domain.Product;
 import com.novardis.productstorage.service.ProductService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,12 @@ public class ProductController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parameter 'id' is null");
         }
         return result;
+    }
+
+    @ApiOperation("Поиск товаров по имени")
+    @GetMapping("/product/search")
+    public List<Product> searchProductsByName(@ApiParam(value = "Текст для поиска по имени") @RequestParam String productName) {
+        return productService.getAllByName(productName);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

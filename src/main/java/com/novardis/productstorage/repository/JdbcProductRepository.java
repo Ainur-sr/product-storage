@@ -53,6 +53,18 @@ public class JdbcProductRepository implements ProductRepository {
     }
 
     @Override
+    public List<ProductDto> findAllByName(String productName) {
+        final String query = "select * from product where name like ?";
+        return jdbcTemplate.query(
+                query,
+                (rs, rowNum) -> new ProductDto()
+                        .setId(rs.getLong("id"))
+                        .setName(rs.getString("name")),
+                "%" + productName + "%"
+        );
+    }
+
+    @Override
     public Optional<ProductDto> findById(Long id) {
         return jdbcTemplate.queryForObject(
                 "select * from product where id = ?",
