@@ -85,6 +85,11 @@ public class ProductServiceImpl implements ProductService {
             boolean isUpdate = productRepository.update(productMapper.toDto(product));
             if (isUpdate) {
                 result = productMapper.toDomain(productRepository.findById(product.getId()).orElse(null));
+                List<ProductAttributeViewDto> productAttributeViewDtoList = attributeRepository.findAllByProductId(result.getId());
+                if (!CollectionUtils.isEmpty(productAttributeViewDtoList)) {
+                    List<Attribute> attributes = productAttributeViewDtoList.stream().map(attributeMapper::toDomain).collect(Collectors.toList());
+                    result.setAttributes(attributes);
+                }
             }
         }
         return result;
